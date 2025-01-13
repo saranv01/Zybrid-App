@@ -1,5 +1,5 @@
 # Zybrid Extension - Hybrid Workplace Management and Engagement
-
+  <img src="images/zybrid-thumbnail.png" width="600">
 Zybrid is an innovative extension that enhances hybrid workplace efficiency by enabling seamless work preference scheduling, mood tracking, workspace booking, and gamified engagement through intuitive bots and widgets. Designed for organizations adopting hybrid work cultures, Zybrid helps improve collaboration, boost employee engagement, and provide actionable insights for increased productivity and satisfaction.
 
 ## Features
@@ -19,13 +19,16 @@ Zybrid is an innovative extension that enhances hybrid workplace efficiency by e
 
 ## Screenshots
 
-![Zybrid](images/zybrid-thumbnail.png)
-![Mood Tracking](images/Mood-Tracking.png)
-![Workspace Booking](images/Workspace-Booking.png)
-![work Preferences](images/work-preferences.png)
-![Workspace Booking](images/Workspace-Booking.png)
-![Engagement Leaderboard](images/Engagement-Leaderboard.png)
-![Coffee Buddy](images/Coffee-Buddy.png)
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+  <img src="images/Mood-Tracking.png" width="300">
+  <img src="images/Workspace-Booking.png" width="300">
+  <img src="images/work-preferences.png" width="300">
+  <img src="images/Engagement-Leaderboard.png" width="300">
+  <img src="images/Coffee-Buddy.png" width="300">
+</div>
+
+
+
 
 ## Project Structure
 ├── Functions
@@ -45,8 +48,10 @@ Zybrid is an innovative extension that enhances hybrid workplace efficiency by e
 └── Widgets  
     └── Engagement Leaderboard  
 
+## Project Demonstration Video
+
 [![Zybrid Demonstration](https://img.youtube.com/vi/aasL2WKYWJc/0.jpg)](https://www.youtube.com/watch?v=aasL2WKYWJc)
-*Example of Zybrid Extension in Zoho Cliq.*
+
 
 
 
