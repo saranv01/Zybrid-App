@@ -1,0 +1,58 @@
+
+tabs = list();
+tabs.add({"label":"Workspace","id":"home"});
+tabs.add({"label":"Work Preferences","id":"preference"});
+tabs.add({"label":"Mood Responses","id":"mood"});
+tabs.add({"label":"Engagement Score","id":"engagementscore"});
+tabs.add({"label":"Coffee Buddy","id":"coffeebuddy"});
+selectedTab = "home";
+if(target != null && target.containsKey("id"))
+{
+	workspacename = target.get("id").get(0);
+	description = target.get("id").get(1);
+}
+elements = list();
+query_map = Map();
+criteria_string = "locationname==" + workspacename;
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("workspacesdb",query_map);
+query_map = Map();
+criteria_string = "";
+query_map.put("criteria",criteria_string);
+response_map_user = zoho.cliq.getRecords("userdb",query_map);
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0 && response_map_user.get("status").equalsIgnoreCase("SUCCESS") && response_map_user.get("list").size() > 0)
+{
+	workspaceExists = true;
+	users = Map();
+	for each  u in response_map_user.get("list")
+	{
+		users.put({u.get("userid"):u.get("name")});
+	}
+	elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+	elements.add({"type":"text","text":"List of scheduled bookings"});
+	elements.add({"type":"text","text":workspacename + "  -  " + description});
+	dataList = list();
+	// Iterate through each workspace and display workspace details as buttons
+	for each  booking in response_map.get("list")
+	{
+		eachData = Map();
+		eachData.put({"Location":booking.get("locationname")});
+		eachData.put({"Start Time":booking.get("starttime").replaceAll("T","   ,  ")});
+		eachData.put({"End Time":booking.get("endtime").replaceAll("T","   ,  ")});
+		eachData.put({"description":booking.get("description")});
+		userid = booking.get("userid");
+		eachData.put({"user":users.get(userid)});
+		dataList.add(eachData);
+	}
+	elements.add({"type":"table","headers":{"user","description","Location","Start Time","End Time"},"rows":dataList,"style":{"width":{"20","20","20","20","20"},"text_align":{"center","center","center","center","center"}}});
+	elements.add({"type":"buttons","buttons":{{"label":"Book Workspace","type":"invoke.function","name":"bookingform","id":"booking","emotion":"positive"}}});
+}
+else
+{
+	elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+	elements.add({"type":"text","text":"no booking history found,feel free to make your booking"});
+	elements.add({"type":"buttons","buttons":{{"label":"Book Workspace","type":"invoke.function","name":"bookingform","id":"booking","emotion":"positive"}}});
+}
+sections = list();
+sections.add({"id":1,"elements":elements});
+return {"type":"applet","tabs":tabs,"active_tab":selectedTab,"header":{"title":"home","navigation":"new"},"sections":sections};

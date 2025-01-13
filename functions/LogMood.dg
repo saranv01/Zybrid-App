@@ -1,0 +1,50 @@
+
+values_map = Map();
+values_map.put("userid",user.get("id"));
+values_map.put("name",user.get("first_name"));
+values_map.put("date",zoho.currentdate);
+info zoho.currentdate;
+info values_map;
+values_map.put("reason","No Reason");
+values_map.put("mood",target.get("name").subString(0,target.get("name").length() - 2));
+response_map = zoho.cliq.createRecord("moodresponsesdb",values_map);
+response = Map();
+card = Map();
+card.put("theme","poll");
+response.put("card",card);
+buttonsList = list();
+buttonsList0 = Map();
+buttonsList0.put("label","Say reason");
+buttonsList0.put("type","+");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMoodReason");
+action.put("data",data);
+buttonsList0.put("action",action);
+buttonsList0.put("key","LogMoodReason");
+buttonsList.add(buttonsList0);
+response.put("buttons",buttonsList);
+response.put("text","Thanks for sharing your mood with us! 😊 We'll take note of it and keep improving together. Have a great day! 👍");
+//adding engagementscore
+query_map = Map();
+criteria_string = "userid==" + user.get("id");
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("userdb",query_map);
+record_id = 0;
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+{
+	record_id = response_map.get("list").get(0).get("id");
+	// Fetching the current engagement score
+	current_score = response_map.get("list").get(0).get("engagementscore");
+	if(current_score == null)
+	{
+		current_score = 0;
+	}
+	new_score = current_score.toLong() + 5;
+	// Updating the user record with the new score
+	values_map = Map();
+	values_map.put("engagementscore",new_score);
+	response_map = zoho.cliq.updateRecord("userdb",record_id,values_map);
+}
+return response;

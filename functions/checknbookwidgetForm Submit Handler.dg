@@ -1,0 +1,64 @@
+
+info form;
+workspaceName = form.get("values").get("workspace_name").get("label");
+userStartTimeStr = form.get("values").get("start_time").get("date_time");
+userEndTimeStr = form.get("values").get("end_time").get("date_time");
+if(userStartTimeStr.length() < 16 || userEndTimeStr.length() < 16)
+{
+	return {"type":"banner","status":"failure","text":"❌ Invalid date-time format. Please ensure the input is in the format `yyyy-MM-dd'T'HH:mm`."};
+}
+userStartTimeNum = userStartTimeStr.replaceAll("-","").replaceAll(":","").replaceAll("T","").toLong();
+userEndTimeNum = userEndTimeStr.replaceAll("-","").replaceAll(":","").replaceAll("T","").toLong();
+if(userEndTimeNum <= userStartTimeNum)
+{
+	return {"type":"banner","status":"failure","text":"❌ End time must be later than start time. Please try again."};
+}
+query_map = Map();
+criteria_string = "locationname==" + workspaceName;
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("workspacesdb",query_map);
+record_id = 0;
+info criteria_string;
+info response_map;
+// Check for conflicts
+conflictExists = false;
+workspaceExists = false;
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+{
+	workspaceExists = true;
+	for each  booking in response_map.get("list")
+	{
+		dbStartTimeStr = booking.get("starttime");
+		dbEndTimeStr = booking.get("endtime");
+		dbStartTimeNum = dbStartTimeStr.replaceAll("-","").replaceAll(":","").replaceAll("T","").toLong();
+		dbEndTimeNum = dbEndTimeStr.replaceAll("-","").replaceAll(":","").replaceAll("T","").toLong();
+		if(userStartTimeNum < dbEndTimeNum && userEndTimeNum > dbStartTimeNum)
+		{
+			conflictExists = true;
+			break;
+		}
+	}
+}
+if(workspaceExists)
+{
+	if(conflictExists)
+	{
+		return {"type":"banner","status":"failure","text":"❌ Booking failed, the selected time conflicts with an existing booking. Please try again."};
+	}
+}
+values_map = Map();
+values_map.put("userid",user.get("id"));
+values_map.put("locationname",workspaceName);
+values_map.put("starttime",userStartTimeStr);
+values_map.put("endtime",userEndTimeStr);
+values_map.put("description","Workspace Booking");
+bookingResult = zoho.cliq.createRecord("workspacesdb",values_map);
+if(bookingResult.get("status") == "SUCCESS")
+{
+	return {"type":"banner","status":"success","text":"✅ Successfully booked !"};
+}
+else
+{
+	return {"type":"banner","status":"failure","text":"❌ Booking failed. Please try again or contact support."};
+}
+return {};

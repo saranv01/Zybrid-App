@@ -1,0 +1,58 @@
+
+userFirstName = user.get("first_name");
+query_map = Map();
+response = Map();
+criteria_string = "userid==" + user.get("id");
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("userdb",query_map);
+name = user.get("first_name");
+coffeebuddy = false;
+workpreferencestatus = "";
+engagementscore = 0;
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+{
+	record = response_map.get("list").get(0);
+	name = user.get("first_name");
+	coffeebuddy = response_map.get("list").get(0).get("coffeebuddy");
+	engagementscore = response_map.get("list").get(0).get("engagementscore");
+	workpreferencestatus = response_map.get("list").get(0).get("workpreferencestatus");
+}
+response = Map();
+response.put("text","Here is your details!");
+bot = Map();
+bot.put("name","zybrid");
+response.put("bot",bot);
+card = Map();
+card.put("icon","https://cdn-icons-png.flaticon.com/128/1177/1177568.png");
+card.put("theme","modern-inline");
+response.put("card",card);
+slidesList = list();
+slidesList0 = Map();
+slidesList0.put("type","table");
+data = Map();
+headersList = list();
+headersList.add("Title");
+headersList.add("Description");
+data.put("headers",headersList);
+rowsList = list();
+rowsList0 = Map();
+rowsList0.put("Title","Name");
+rowsList0.put("Description",name);
+rowsList.add(rowsList0);
+rowsList1 = Map();
+rowsList1.put("Title","Work Preference");
+rowsList1.put("Description",workpreferencestatus);
+rowsList.add(rowsList1);
+rowsList2 = Map();
+rowsList2.put("Title","Coffee Buddy");
+rowsList2.put("Description",coffeebuddy);
+rowsList.add(rowsList2);
+rowsList3 = Map();
+rowsList3.put("Title","Engagement Score");
+rowsList3.put("Description",engagementscore + "");
+rowsList.add(rowsList3);
+data.put("rows",rowsList);
+slidesList0.put("data",data);
+slidesList.add(slidesList0);
+response.put("slides",slidesList);
+return response;

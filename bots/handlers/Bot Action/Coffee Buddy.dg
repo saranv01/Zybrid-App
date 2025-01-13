@@ -1,0 +1,72 @@
+
+response = Map();
+if(sub_action.containsIgnoreCase("Yes") || sub_action.containsIgnoreCase("Not now"))
+{
+	user_input = "FALSE";
+	if(sub_action.containsIgnoreCase("Yes"))
+	{
+		user_input = "TRUE";
+	}
+	values_map = Map();
+	values_map.put("coffeebuddy",user_input);
+	query_map = Map();
+	criteria_string = "userid==" + user.get("id");
+	query_map.put("criteria",criteria_string);
+	response_map = zoho.cliq.getRecords("userdb",query_map);
+	record_id = "";
+	if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+	{
+		record_id = response_map.get("list").get(0).get("id");
+	}
+	info record_id;
+	if(!record_id.isEmpty())
+	{
+		update_response = zoho.cliq.updateRecord("userdb",record_id,values_map);
+		if(update_response.get("status").equalsIgnoreCase("SUCCESS"))
+		{
+			if(user_input == "TRUE")
+			{
+				response.put("text","Your coffee buddy preference has been updated to: Yes");
+				response = Map();
+				response.put("text","best random coffeebuddy");
+				card = Map();
+				card.put("theme","prompt");
+				card.put("thumbnail","https://images.pexels.com/photos/324028/pexels-photo-324028.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+				card.put("title","Find your Coffee Buddy!");
+				response.put("card",card);
+				buttonsList = list();
+				buttonsList0 = Map();
+				buttonsList0.put("label","Choose Buddy");
+				buttonsList0.put("hint","choose now");
+				buttonsList0.put("type","+");
+				action = Map();
+				action.put("type","invoke.function");
+				data = Map();
+				data.put("name","coffeeBuddyFunction");
+				action.put("data",data);
+				buttonsList0.put("action",action);
+				buttonsList0.put("key","coffeeBuddyFunction");
+				buttonsList.add(buttonsList0);
+				response.put("buttons",buttonsList);
+				return response;
+			}
+			else
+			{
+				response.put("text","Your coffee buddy preference has been updated to: Not now");
+			}
+		}
+		else
+		{
+			response.put("text","An error occurred while updating your coffee buddy preference. Please try again.");
+		}
+	}
+	else
+	{
+		response.put("text","Sorry, we couldn't find your user record.");
+	}
+}
+else
+{
+	response.put("text","Invalid selection. Please choose either 'Yes' or 'Not now'.");
+}
+return response;

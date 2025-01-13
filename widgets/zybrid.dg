@@ -1,0 +1,225 @@
+
+tabs = list();
+tabs.add({"label":"Workspace","id":"home"});
+tabs.add({"label":"Work Preferences","id":"preference"});
+tabs.add({"label":"Mood Responses","id":"mood"});
+tabs.add({"label":"Engagement Score","id":"engagementscore"});
+tabs.add({"label":"Coffee Buddy","id":"coffeebuddy"});
+selectedTab = "home";
+if(target != null && target.containsKey("id"))
+{
+	selectedTab = target.get("id");
+}
+if(selectedTab == "home")
+{
+	query_map = Map();
+	criteria_string = "";
+	query_map.put("criteria",criteria_string);
+	response_map = zoho.cliq.getRecords("workspaces",query_map);
+	workspaceExists = false;
+	elements = list();
+	if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+	{
+		workspaceExists = true;
+		elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+		elements.add({"type":"text","text":"These are the list of workspaces."});
+		dataList = list();
+		for each  workspace in response_map.get("list")
+		{
+			workspaceName = workspace.get("workspacename");
+			description = workspace.get("workspacedescription");
+			eachData = Map();
+			eachData.put("title",workspaceName);
+			eachData.put("description",description);
+			eachData.put("image_url","https://img.freepik.com/free-photo/modern-office-space-interior_158595-5206.jpg");
+			eachData.put("buttons",{{"label":"view","type":"invoke.function","name":"workspacePage","emotion":"positive","id":{workspaceName,description}}});
+			dataList.add(eachData);
+		}
+		elements.add({"type":"cards","data":dataList,"style":{"view":"gallery","size":"small"}});
+	}
+	else
+	{
+		elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+		elements.add({"type":"text","text":"No workspaces found at the moment. refer this demo video: 'https://youtu.be/aasL2WKYWJc?si=Z81kBEsL5lnFPIxK'"});
+	}
+	sections = list();
+	sections.add({"id":1,"elements":elements});
+	return {"type":"applet","tabs":tabs,"active_tab":selectedTab,"sections":sections};
+}
+else if(selectedTab == "preference")
+{
+	query_map = Map();
+	criteria_string = "";
+	query_map.put("criteria",criteria_string);
+	response_map = zoho.cliq.getRecords("workpreferencesdb",query_map);
+	workspaceExists = false;
+	elements = list();
+	if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+	{
+		workspaceExists = true;
+		elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+		elements.add({"type":"text","text":"These are the list of work preferences of the employees"});
+		elements.add({"type":"text","text":"Refer this demo video: https://youtu.be/aasL2WKYWJc?si=Z81kBEsL5lnFPIxK"});
+		dataList = list();
+		daysOfWeek = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+		for each  preference in response_map.get("list")
+		{
+			eachData = Map();
+			eachData.put("Name",preference.get("username"));
+			preferencesForWeek = preference.get("preferenceforweek");
+			preferencesForWeek = preferencesForWeek.toList("");
+			indexes = {0,1,2,3,4,5,6};
+			for each  index in indexes
+			{
+				dayLetter = preferencesForWeek.get(index);
+				info dayLetter;
+				if(dayLetter == "H")
+				{
+					eachData.put(daysOfWeek.get(index),"Home");
+				}
+				else if(dayLetter == "O")
+				{
+					eachData.put(daysOfWeek.get(index),"Office");
+				}
+				else if(dayLetter == "N")
+				{
+					eachData.put(daysOfWeek.get(index),"NaN");
+				}
+			}
+			dataList.add(eachData);
+		}
+		elements.add({"type":"table","headers":{"Name","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"},"rows":dataList});
+		elements.add({"type":"divider"});
+	}
+	else
+	{
+		elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+		elements.add({"type":"text","text":"No data found."});
+	}
+	sections = list();
+	sections.add({"id":1,"elements":elements});
+	return {"type":"applet","tabs":tabs,"active_tab":selectedTab,"sections":sections};
+}
+else if(selectedTab == "mood")
+{
+	query_map = Map();
+	criteria_string = "date==" + toString(now,'yyyy-MM-dd');
+	query_map.put("criteria",criteria_string);
+	response_map = zoho.cliq.getRecords("moodresponsesdb",query_map);
+	workspaceExists = false;
+	elements = list();
+	sections = list();
+	dataList = list();
+	if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+	{
+		data = Map();
+		moods = list();
+		for each  resp in response_map.get("list")
+		{
+			m = resp.get("mood");
+			if(data.containKey(m))
+			{
+				data.put({m:data.get(m) + 1});
+			}
+			else
+			{
+				data.put({m:1});
+				moods.add(m);
+			}
+			eachData = Map();
+			eachData.put({"Mood":m});
+			eachData.put({"Name":resp.get("name")});
+			eachData.put({"Reason":resp.get("reason")});
+			dataList.add(eachData);
+		}
+		graphData = list();
+		for each  mood in moods
+		{
+			eachData = Map();
+			eachData.put({"label":mood,"value":data.get(mood)});
+			graphData.add(eachData);
+		}
+		elements.add({"type":"title","text":"Mood Responses on " + today});
+		elements.add({"type":"percentage_chart","styles":{"preview":"pie"},"data":graphData});
+		elements.add({"type":"title","text":"List of all Mood Responses"});
+		elements.add({"type":"table","headers":{"Name","Mood","Reason"},"rows":dataList});
+		sections.add({"id":1,"elements":elements});
+	}
+	else
+	{
+		elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+		elements.add({"type":"text","text":"sorry no data found!"});
+		sections.add({"id":1,"elements":elements});
+	}
+	return {"type":"applet","tabs":tabs,"active_tab":selectedTab,"sections":sections};
+}
+else if(selectedTab == "engagementscore")
+{
+	query_map = Map();
+	criteria_string = "";
+	query_map.put("criteria",criteria_string);
+	query_map.put("order_by","-engagementscore");
+	response_map = zoho.cliq.getRecords("userdb",query_map);
+	workspaceExists = false;
+	elements = list();
+	sections = list();
+	dataList = list();
+	if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+	{
+		for each  resp in response_map.get("list")
+		{
+			eachData = Map();
+			eachData.put({"Name":resp.get("name")});
+			eachData.put({"Email":resp.get("email")});
+			eachData.put({"Engagement Score":resp.get("engagementscore")});
+			dataList.add(eachData);
+		}
+		elements.add({"type":"title","text":"Engagement Leaderboard"});
+		elements.add({"type":"table","headers":{"Name","Email","Engagement Score"},"rows":dataList});
+		sections.add({"id":1,"elements":elements});
+	}
+	else
+	{
+		elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+		elements.add({"type":"text","text":toString(now,'yyyy-MM-dd')});
+		sections.add({"id":1,"elements":elements});
+	}
+	return {"type":"applet","tabs":tabs,"active_tab":selectedTab,"sections":sections};
+}
+else if(selectedTab == "coffeebuddy")
+{
+	elements = list();
+	elements.add({"type":"text","text":"*Coffee Buddy*"});
+	elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+	elements.add({"type":"text","text":"1️⃣ Click the menu icon in Zybrid - Multivac’s chat."});
+	elements.add({"type":"text","text":"2️⃣ Choose Coffee Buddy and select:\n- `Yes`: To join.\n- `Not Now`: To decline"});
+	elements.add({"type":"text","text":"3️⃣ If another user enabled, Zybrid will pair you for a friendly interaction, when you click 'Check buddy'"});
+	dataList = list();
+	eachData = Map();
+	eachData.put("title","Coffee Buddy");
+	eachData.put("description","Get your coffee buddy, by clicking the button below. If someone enabled coffee-buddy option you'll get dm from the person.");
+	eachData.put("image_url","https://img.freepik.com/premium-vector/drawing-group-people-having-conversation_1187092-19981.jpg?w=1060");
+	eachData.put("buttons",{{"label":"Check buddy","type":"invoke.function","name":"coffeeBuddyFunction","emotion":"positive","id":{workspaceName,description}}});
+	dataList.add(eachData);
+	elements.add({"type":"cards","data":dataList,"style":{"view":"gallery","size":"medium"}});
+	sections = list();
+	sections.add({"id":1,"elements":elements});
+	return {"type":"applet","tabs":tabs,"active_tab":selectedTab,"sections":sections};
+}
+else if(selectedTab == "help")
+{
+	elements = list();
+	elements.add({"type":"text","text":"*Help*"});
+	elements.add({"type":"title","text":"Welcome " + user.get("first_name") + "!"});
+	elements.add({"type":"text","text":"1️⃣ Click the menu icon in Zybrid - Multivac’s chat."});
+	elements.add({"type":"text","text":"2️⃣ Choose Coffee Buddy and select:\n- `Yes`: To join.\n- `Not Now`: To decline"});
+	elements.add({"type":"text","text":"3️⃣ If another user enabled, Zybrid will pair you for a friendly interaction, when you click 'Check buddy'"});
+	sections = list();
+	sections.add({"id":1,"elements":elements});
+	return {"type":"applet","tabs":tabs,"active_tab":selectedTab,"sections":sections};
+}
+else
+{
+	sections = list();
+	return {"type":"applet","tabs":tabs,"active_tab":selectedTab,"sections":sections};
+}

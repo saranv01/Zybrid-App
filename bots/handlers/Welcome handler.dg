@@ -1,0 +1,61 @@
+
+response = Map();
+bot = Map();
+bot.put("name","zybrid");
+response.put("bot",bot);
+card = Map();
+card.put("title","Zybrid User Guide");
+card.put("icon","https://example.com/icon.png");
+card.put("theme","modern-inline");
+response.put("card",card);
+slidesList = list();
+slidesList0 = Map();
+slidesList0.put("type","text");
+slidesList0.put("title","1. Add User Command (Admin Feature)");
+slidesList0.put("data","Admins can add new users to Zybrid using the following command:\n\n Type the command:\n /ADDUSER  (slash command)");
+slidesList.add(slidesList0);
+// Adding a New Workspace (Admin Feature)
+slidesList1 = Map();
+slidesList1.put("type","text");
+slidesList1.put("title","2. Adding a New Workspace (Admin Feature)");
+slidesList1.put("data","Admins can add a workspace via the Zybrid - Multivac bot with the following steps:\n\n1️⃣ Open the Zybrid bot in Zoho Cliq.\n2️⃣ Type the command:\n`ADD WORKSPACE <WorkspaceName> <Category> <Description>`\n\nExample:\n`ADD WORKSPACE \"Conference-Room-A\" MeetingRoom \"A-spacious-room-with-projector\"`");
+slidesList.add(slidesList1);
+// Booking a Workspace
+slidesList2 = Map();
+slidesList2.put("type","text");
+slidesList2.put("title","3. Booking a Workspace");
+slidesList2.put("data","For all users:\n\n1️⃣ Message `BOOK WORKSPACE` to the Zybrid bot.\n2️⃣ The bot will open a booking form.\n3️⃣ Select:\n- The date.\n- A specific workspace.\n4️⃣ Confirm the booking.");
+slidesList.add(slidesList2);
+// Work Preferences Scheduler
+slidesList3 = Map();
+slidesList3.put("type","text");
+slidesList3.put("title","4. Work Preferences Scheduler");
+slidesList3.put("data","Stay organized with weekly work preferences.\n\n*Weekly Scheduler:* Zybrid will prompt users to choose their work preferences every week (Office or Remote) (@ 04.00 p.m Sunday).\nFor unscheduled days, simply leave them blank.\n\n*Updating Preferences:* Use `/updateworkdays` command to:\n1️⃣ Update preferences for specific days.\n2️⃣ Ensure flexibility for hybrid work needs.\n\n*Viewing Preferences:* Navigate to the Work Preferences tab in the widget to:\n- See your own preferences.\n- View colleagues' preferences for collaboration. \n- use `/updateworkdays` to update it later");
+slidesList.add(slidesList3);
+// Mood Tracker
+slidesList4 = Map();
+slidesList4.put("type","text");
+slidesList4.put("title","5. Mood Tracker");
+slidesList4.put("data","Track daily moods to improve workplace well-being.\n\n- Zybrid sends a mood survey every day (09.00 pm).\n- Optionally provide a reason for your mood (confidential).\n\n*Mood Analysis:* Admins and team leads can access detailed insights in the Mood Responses tab. This includes individual and team-level mood trends for proactive support.");
+slidesList.add(slidesList4);
+// Engagement with Multivac
+slidesList5 = Map();
+slidesList5.put("type","text");
+slidesList5.put("title","6. Engagement with Multivac");
+slidesList5.put("data","Motivate employees and foster team spirit with engagement points.\n\n*Earning Points:*\n1️⃣ *Chat Engagement:* Actively participate in team channels. Words like \"happy,\" \"support,\" or customer-related terms award points (weightage varry upon the words and engagement, we have used 1000+ curated words with various weitage points in this version).\n2️⃣ **Mood Survey Participation:**\n   - 10 points for completing the survey.\n   - 15 points for providing both mood and reason.\n\n*Viewing Scores:* Check the Leaderboard tab in the widget for:\n- Individual scores.\n- Top contributors.\n\n*Coffee Buddy:*\n1️⃣ Click the menu icon in Zybrid - Multivac’s chat.\n2️⃣ Choose Coffee Buddy and select:\n- `Yes`: To join.\n- `Not Now`: To decline.\n3️⃣ If another user joins, Zybrid will pair you for a friendly interaction.");
+slidesList.add(slidesList5);
+// Commands Overview
+slidesList6 = Map();
+slidesList6.put("type","text");
+slidesList6.put("title","7. Commands Overview");
+slidesList6.put("data","Use these commands for quick actions:\n\n- message to the zybryd bot as `about me`: Displays your profile details. \n- message to the zybryd bot as `add workspace <name>`: to add workspace. \n- `/bookworkspace `: To book the workspace \n- `/updateworkdays`: Updates your weekly work preferences. \n- `/adduser`: To add users. \n- `/help`: to access the guide and the working of zybrid.");
+slidesList.add(slidesList6);
+// Widget Overview
+slidesList7 = Map();
+slidesList7.put("type","text");
+slidesList7.put("title","8. Widget Overview");
+slidesList7.put("data","Zybrid’s widget integrates key insights:\n \n- *Workspace Tab:* View workspace availability and bookings. \n- *Work Preferences Tab:* View personal and team work schedules.\n- *Mood Responses Tab:* Monitor daily moods and analysis.\n- *Leaderboard Tab:* Track engagement points for active users.\n\n Refer the complete demonstration video: *`https//youtu.be/aasL2WKYWJc?si=Z81kBEsL5lnFPIxK`*");
+slidesList.add(slidesList7);
+response.put("slides",slidesList);
+response.put("text","zybrid!");
+return response;

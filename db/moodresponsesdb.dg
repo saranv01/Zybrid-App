@@ -1,0 +1,8 @@
+
+values_map = Map(); 
+values_map.put("userid", "ABC"); 
+values_map.put("name", "ABC"); 
+values_map.put("date", "ABC"); 
+values_map.put("reason", "ABC"); 
+values_map.put("mood", "ABC"); 
+response_map=zoho.cliq.createRecord("moodresponsesdb", values_map); 

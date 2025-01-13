@@ -1,0 +1,40 @@
+
+values_map = Map();
+values_map.put("reason",form.get("values").get("textarea"));
+info user.get("date");
+query_map = Map();
+criteria_string = "userid==" + user.get("id") + "&&" + "date==" + toString(now,'yyyy-MM-dd');
+query_map.put("criteria",criteria_string);
+info criteria_string;
+response_map = zoho.cliq.getRecords("moodresponsesdb",query_map);
+record_id = 0;
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+{
+	record_id = response_map.get("list").get(0).get("id");
+}
+if(record_id.length() > 0)
+{
+	response_map = zoho.cliq.updateRecord("moodresponsesdb",record_id,values_map);
+}
+//adding engagementscore for saying reason
+query_map = Map();
+criteria_string = "userid==" + user.get("id");
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("userdb",query_map);
+record_id = 0;
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+{
+	record_id = response_map.get("list").get(0).get("id");
+	current_score = response_map.get("list").get(0).get("engagementscore");
+	if(current_score == null)
+	{
+		current_score = 0;
+	}
+	new_score = current_score.toLong() + 10;
+	values_map = Map();
+	values_map.put("engagementscore",new_score);
+	response_map = zoho.cliq.updateRecord("userdb",record_id,values_map);
+}
+response = Map();
+response.put("text","Thank You! Submitted");
+return response;

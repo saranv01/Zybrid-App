@@ -1,0 +1,68 @@
+
+response = Map();
+bot = Map();
+bot.put("name","zybrid");
+response.put("bot",bot);
+query_map = Map();
+criteria_string = "coffeebuddy==TRUE";
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("userdb",query_map);
+record_id = "";
+buddyName = "";
+buddyId = "";
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 1)
+{
+	for each  el in response_map
+	{
+		random = response_map.get("list").size();
+		random = randomNumber(0,random);
+		processed = false;
+		if(!processed && response_map.get("list").get(random).get("email") != user.get("email"))
+		{
+			processed = true;
+			record_id = response_map.get("list").get(random).get("email");
+			buddyName = response_map.get("list").get(random).get("name");
+			buddyId = response_map.get("list").get(random).get("userid");
+		}
+	}
+}
+else
+{
+	response = Map();
+	response.put("text","No buddy found. Let's find one together or try again later!");
+	return response;
+}
+response = Map();
+response.put("text","Hello, I'm your Coffee Buddy! " + "{@" + user.get("email") + "}" + "!  Let's brew meaningful connections and make your day brighter");
+bot = Map();
+bot.put("name","" + user.get("first_name"));
+response.put("bot",bot);
+card = Map();
+card.put("title","Hello, I'm your Coffee Buddy! ");
+card.put("thumbnail","https://c.tenor.com/i2yM1FCiPBcAAAAd/hi.gif");
+card.put("theme","prompt");
+response.put("card",card);
+zoho.cliq.postToUser("" + record_id,response);
+bot.put("name","" + buddyName);
+response2 = Map();
+response.put("text","Hello I'm your  Coffee Buddy! " + "{@" + record_id + "}" + "!  Let's brew meaningful connections and make your day brighter!");
+zoho.cliq.postToUser("" + user.get("id"),response2);
+values_map = Map();
+values_map.put("coffeebuddy","false");
+query_map = Map();
+criteria_string = "userid==" + user.get("id");
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("userdb",query_map);
+record_id = response_map.get("list").get(0).get("id");
+info record_id;
+update_response = zoho.cliq.updateRecord("userdb",record_id,values_map);
+values_map = Map();
+values_map.put("coffeebuddy","false");
+query_map = Map();
+criteria_string = "userid==" + buddyId;
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("userdb",query_map);
+record_id = response_map.get("list").get(0).get("id");
+info record_id;
+update_response = zoho.cliq.updateRecord("userdb",record_id,values_map);
+return response;

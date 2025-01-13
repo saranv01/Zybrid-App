@@ -1,0 +1,23 @@
+
+response = Map();
+response.put("type","form");
+response.put("title","Mood Tracker");
+response.put("name","moodsurvey");
+response.put("hint","Say your reason here!");
+response.put("button_label","Submit");
+inputsList = list();
+inputsList0 = Map();
+inputsList0.put("label","Say your reason here!");
+inputsList0.put("name","textarea");
+inputsList0.put("placeholder","Tell us... ");
+inputsList0.put("min_length","0");
+inputsList0.put("max_length","25");
+inputsList0.put("mandatory",false);
+inputsList0.put("type","textarea");
+inputsList.add(inputsList0);
+response.put("inputs",inputsList);
+action = Map();
+action.put("type","invoke.function");
+action.put("name","submitReason");
+response.put("action",action);
+return response;

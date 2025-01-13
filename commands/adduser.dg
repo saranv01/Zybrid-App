@@ -1,0 +1,39 @@
+
+response = Map();
+response.put("type","form");
+response.put("title","Add New User");
+response.put("name","adduserform");
+response.put("hint","Please provide the details of the user you want to add.");
+response.put("button_label","Submit");
+inputsList = list();
+inputsList0 = Map();
+inputsList0.put("label","Select Users");
+inputsList0.put("name","users");
+inputsList0.put("placeholder","Choose users from the contact list.");
+inputsList0.put("multiple",true);
+inputsList0.put("mandatory",true);
+inputsList0.put("type","native_select");
+inputsList0.put("data_source","contacts");
+inputsList.add(inputsList0);
+inputsList4 = Map();
+inputsList4.put("label","Field");
+inputsList4.put("name","field");
+inputsList4.put("placeholder","Engineering");
+inputsList4.put("mandatory",true);
+inputsList4.put("type","text");
+inputsList.add(inputsList4);
+// Role (as number)
+inputsList5 = Map();
+inputsList5.put("label","Level");
+inputsList5.put("name","level");
+inputsList5.put("placeholder","1 (Admin), 2 (Manager), etc.");
+inputsList5.put("mandatory",true);
+inputsList5.put("type","number");
+inputsList.add(inputsList5);
+response.put("inputs",inputsList);
+action = Map();
+action.put("type","invoke.function");
+action.put("name","storeUserData");
+// Function name to store user data
+response.put("action",action);
+return response;

@@ -1,0 +1,57 @@
+
+response = Map();
+info form;
+// Initialize the preference string
+preferences_string = "";
+// Map form values to character representation
+preferences_map = form.get("values");
+day_order = {"monday","tuesday","wednesday","thursday","friday","saturday","sunday"};
+// Loop through days and append "O" or "H"
+for each  day in day_order
+{
+	if(preferences_map.get(day + "_preference").size() > 0)
+	{
+		preference = preferences_map.get(day + "_preference").get("value");
+		if(preference == "office")
+		{
+			preferences_string = preferences_string + "O";
+		}
+		else if(preference == "home")
+		{
+			preferences_string = preferences_string + "H";
+		}
+	}
+	else
+	{
+		preferences_string = preferences_string + "N";
+	}
+}
+values_map = Map();
+values_map.put("preferenceforweek",preferences_string);
+values_map.put("userid",user.get("id"));
+values_map.put("username",user.get("first_name"));
+// Check if a record exists for the user
+query_map = Map();
+criteria_string = "userid ==" + user.get("id");
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("workpreferencesdb",query_map);
+record_id = 0;
+// If a record exists, fetch its ID
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+{
+	record_id = response_map.get("list").get(0).get("id");
+}
+// Update or create the record
+if(response_map.get("list").length() > 0)
+{
+	// Update existing record
+	response_map = zoho.cliq.updateRecord("workpreferencesdb",record_id,values_map);
+	response.put("text","Your preferences have been updated successfully.");
+}
+else
+{
+	// Create new record
+	response_map = zoho.cliq.createRecord("workpreferencesdb",values_map);
+	response.put("text","Your preferences have been saved successfully.");
+}
+return response;

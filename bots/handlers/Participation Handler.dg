@@ -1,0 +1,583 @@
+
+response = Map();
+engagement_points = 0;
+botMessage = null;
+// Check for operations to skip certain actions like removed_from_thread or thread_closed
+if(operation.equals("removed_from_thread") || operation.equals("thread_closed"))
+{
+	return response;
+}
+// Handle different participation operations
+if(operation.equals("added"))
+{
+	botMessage = "Thanks for adding me $USER_MENTION. Hi everyone! :bye-bye:\nI will actively participate in this channel from now on.";
+}
+else if(operation.equals("removed"))
+{
+	botMessage = "I've been removed from this channel. Adiós, everyone! :bye-bye:";
+}
+else if(operation.equals("message_sent"))
+{
+	//  botMessage = "$USER_MENTION has sent a message.";
+	message_text = data.get("message").get("text");
+	// Award points based on the message content
+	if(message_text.contains("happy") || message_text.contains("good") || message_text.contains("excited") || message_text.contains("joyful") || message_text.contains("elated") || message_text.contains("grateful") || message_text.contains("pleased") || message_text.contains("blessed") || message_text.contains("content") || message_text.contains("proud"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for positive emotions
+	}
+	if(message_text.contains("sad") || message_text.contains("bad") || message_text.contains("disappointed") || message_text.contains("down") || message_text.contains("unhappy") || message_text.contains("frustrated") || message_text.contains("bored") || message_text.contains("angry") || message_text.contains("lonely") || message_text.contains("depressed"))
+	{
+		engagement_points = engagement_points + 5;
+		// Award 5 points for neutral or negative sentiments
+	}
+	if(message_text.contains("thank you") || message_text.contains("thanks") || message_text.contains("appreciate") || message_text.contains("grateful") || message_text.contains("thanks a lot") || message_text.contains("thanks so much") || message_text.contains("many thanks") || message_text.contains("cheers") || message_text.contains("acknowledge") || message_text.contains("recognize"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for gratitude-related messages
+	}
+	if(message_text.contains("work") || message_text.contains("completed") || message_text.contains("task") || message_text.contains("delivered") || message_text.contains("submitted") || message_text.contains("accomplished") || message_text.contains("achieved") || message_text.contains("finished") || message_text.contains("resolved") || message_text.contains("cleared"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for task completion
+	}
+	if(message_text.contains("bug") || message_text.contains("error") || message_text.contains("issue") || message_text.contains("problem") || message_text.contains("downtime") || message_text.contains("failure") || message_text.contains("blocked") || message_text.contains("stuck") || message_text.contains("crashed") || message_text.contains("debug"))
+	{
+		engagement_points = engagement_points + 6;
+		// Award 6 points for identifying and reporting issues
+	}
+	if(message_text.contains("brainstorm") || message_text.contains("idea") || message_text.contains("innovate") || message_text.contains("concept") || message_text.contains("suggestion") || message_text.contains("plan") || message_text.contains("strategy") || message_text.contains("propose") || message_text.contains("discuss") || message_text.contains("share"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for creativity and idea sharing
+	}
+	if(message_text.contains("team") || message_text.contains("collaborate") || message_text.contains("together") || message_text.contains("group") || message_text.contains("support") || message_text.contains("assist") || message_text.contains("partner") || message_text.contains("help") || message_text.contains("coordinate") || message_text.contains("workshop"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for teamwork and collaboration
+	}
+	if(message_text.contains("deadline") || message_text.contains("schedule") || message_text.contains("meeting") || message_text.contains("agenda") || message_text.contains("time") || message_text.contains("calendar") || message_text.contains("plan") || message_text.contains("reschedule") || message_text.contains("adjust") || message_text.contains("timing"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for time management-related topics
+	}
+	if(message_text.contains("success") || message_text.contains("milestone") || message_text.contains("win") || message_text.contains("victory") || message_text.contains("achievement") || message_text.contains("goal") || message_text.contains("target") || message_text.contains("reach") || message_text.contains("progress") || message_text.contains("growth"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for accomplishments and progress
+	}
+	if(message_text.contains("training") || message_text.contains("learn") || message_text.contains("session") || message_text.contains("educate") || message_text.contains("upskill") || message_text.contains("develop") || message_text.contains("knowledge") || message_text.contains("course") || message_text.contains("material") || message_text.contains("instruct"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for learning and training activities
+	}
+	if(message_text.contains("inspire") || message_text.contains("motivate") || message_text.contains("encourage") || message_text.contains("uplift") || message_text.contains("supportive") || message_text.contains("cheer") || message_text.contains("positive") || message_text.contains("optimistic") || message_text.contains("hopeful") || message_text.contains("driven"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for motivational or inspirational messages
+	}
+	if(message_text.contains("mentor") || message_text.contains("guide") || message_text.contains("coach") || message_text.contains("advice") || message_text.contains("feedback") || message_text.contains("suggestion") || message_text.contains("tips") || message_text.contains("recommend") || message_text.contains("opinion") || message_text.contains("helpful"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for providing guidance or mentorship
+	}
+	if(message_text.contains("fun") || message_text.contains("joke") || message_text.contains("laugh") || message_text.contains("smile") || message_text.contains("game") || message_text.contains("entertain") || message_text.contains("celebrate") || message_text.contains("enjoy") || message_text.contains("happy hour") || message_text.contains("festival"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for promoting fun and celebrations
+	}
+	if(message_text.contains("innovate") || message_text.contains("design") || message_text.contains("prototype") || message_text.contains("develop") || message_text.contains("test") || message_text.contains("launch") || message_text.contains("create") || message_text.contains("build") || message_text.contains("engineer") || message_text.contains("refactor"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for innovation and project development
+	}
+	if(message_text.contains("focus") || message_text.contains("dedication") || message_text.contains("commitment") || message_text.contains("hard work") || message_text.contains("perseverance") || message_text.contains("effort") || message_text.contains("strive") || message_text.contains("resolve") || message_text.contains("persistence") || message_text.contains("endurance"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for persistence and hard work
+	}
+	if(message_text.contains("critical") || message_text.contains("analyze") || message_text.contains("evaluate") || message_text.contains("assess") || message_text.contains("review") || message_text.contains("scrutinize") || message_text.contains("measure") || message_text.contains("consider") || message_text.contains("discuss") || message_text.contains("judge"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for critical thinking or analysis
+	}
+	if(message_text.contains("connect") || message_text.contains("network") || message_text.contains("relationship") || message_text.contains("bond") || message_text.contains("friendship") || message_text.contains("partnership") || message_text.contains("collaboration") || message_text.contains("alliance") || message_text.contains("teamwork") || message_text.contains("interaction"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for connection and collaboration
+	}
+	if(message_text.contains("health") || message_text.contains("wellness") || message_text.contains("fitness") || message_text.contains("care") || message_text.contains("mental health") || message_text.contains("happiness") || message_text.contains("energy") || message_text.contains("relax") || message_text.contains("exercise") || message_text.contains("nutrition"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for health and wellness topics
+	}
+	if(message_text.contains("respect") || message_text.contains("dignity") || message_text.contains("honor") || message_text.contains("acknowledge") || message_text.contains("fairness") || message_text.contains("value") || message_text.contains("appreciate") || message_text.contains("gratitude") || message_text.contains("compliment") || message_text.contains("praise"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for respect and acknowledgment
+	}
+	if(message_text.contains("problem-solving") || message_text.contains("solution") || message_text.contains("resolve") || message_text.contains("fix") || message_text.contains("handle") || message_text.contains("rectify") || message_text.contains("troubleshoot") || message_text.contains("solve") || message_text.contains("determine") || message_text.contains("overcome"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for problem-solving
+	}
+	if(message_text.contains("plan") || message_text.contains("organize") || message_text.contains("schedule") || message_text.contains("strategy") || message_text.contains("goal") || message_text.contains("objective") || message_text.contains("timeline") || message_text.contains("roadmap") || message_text.contains("prioritize") || message_text.contains("agenda"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for planning and organization
+	}
+	if(message_text.contains("lead") || message_text.contains("manage") || message_text.contains("supervise") || message_text.contains("guide") || message_text.contains("coordinate") || message_text.contains("mentor") || message_text.contains("responsibility") || message_text.contains("direct") || message_text.contains("initiative") || message_text.contains("decision"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for leadership-related messages
+	}
+	if(message_text.contains("feedback") || message_text.contains("review") || message_text.contains("opinion") || message_text.contains("critique") || message_text.contains("comment") || message_text.contains("suggestion") || message_text.contains("response") || message_text.contains("reaction") || message_text.contains("insight") || message_text.contains("evaluation"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for constructive feedback or suggestions
+	}
+	if(message_text.contains("problem") || message_text.contains("issue") || message_text.contains("challenge") || message_text.contains("concern") || message_text.contains("difficulty") || message_text.contains("obstacle") || message_text.contains("roadblock") || message_text.contains("barrier") || message_text.contains("struggle") || message_text.contains("complication"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for identifying problems or challenges
+	}
+	if(message_text.contains("solution") || message_text.contains("resolve") || message_text.contains("fix") || message_text.contains("address") || message_text.contains("settle") || message_text.contains("repair") || message_text.contains("remedy") || message_text.contains("improve") || message_text.contains("optimize") || message_text.contains("correct"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for providing solutions
+	}
+	if(message_text.contains("project") || message_text.contains("assignment") || message_text.contains("task") || message_text.contains("workload") || message_text.contains("deadline") || message_text.contains("deliverable") || message_text.contains("milestone") || message_text.contains("goal") || message_text.contains("responsibility") || message_text.contains("output"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for work or task-related discussions
+	}
+	if(message_text.contains("research") || message_text.contains("study") || message_text.contains("analyze") || message_text.contains("investigate") || message_text.contains("examine") || message_text.contains("explore") || message_text.contains("learn") || message_text.contains("inquire") || message_text.contains("evaluate") || message_text.contains("assess"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for research or analysis
+	}
+	if(message_text.contains("collaborate") || message_text.contains("cooperate") || message_text.contains("team") || message_text.contains("share") || message_text.contains("contribute") || message_text.contains("assist") || message_text.contains("support") || message_text.contains("engage") || message_text.contains("partner") || message_text.contains("participate"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for collaboration and teamwork
+	}
+	if(message_text.contains("idea") || message_text.contains("concept") || message_text.contains("proposal") || message_text.contains("suggestion") || message_text.contains("innovation") || message_text.contains("invention") || message_text.contains("creation") || message_text.contains("brainstorm") || message_text.contains("thought") || message_text.contains("vision"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for creativity and ideation
+	}
+	if(message_text.contains("training") || message_text.contains("learning") || message_text.contains("education") || message_text.contains("skill") || message_text.contains("knowledge") || message_text.contains("development") || message_text.contains("coaching") || message_text.contains("mentorship") || message_text.contains("workshop") || message_text.contains("seminar"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for education and skill-building
+	}
+	if(message_text.contains("update") || message_text.contains("status") || message_text.contains("progress") || message_text.contains("report") || message_text.contains("current") || message_text.contains("ongoing") || message_text.contains("completed") || message_text.contains("pending") || message_text.contains("milestone") || message_text.contains("deliverable"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for status updates and progress reporting
+	}
+	if(message_text.contains("debug") || message_text.contains("test") || message_text.contains("fix") || message_text.contains("error") || message_text.contains("issue") || message_text.contains("failure") || message_text.contains("resolve") || message_text.contains("retry") || message_text.contains("validate") || message_text.contains("troubleshoot"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for debugging or testing discussions
+	}
+	if(message_text.contains("review") || message_text.contains("approve") || message_text.contains("check") || message_text.contains("validate") || message_text.contains("feedback") || message_text.contains("verify") || message_text.contains("inspect") || message_text.contains("confirm") || message_text.contains("assess") || message_text.contains("evaluate"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for reviews or validations
+	}
+	if(message_text.contains("team") || message_text.contains("group") || message_text.contains("collaborate") || message_text.contains("together") || message_text.contains("assist") || message_text.contains("help") || message_text.contains("join") || message_text.contains("support") || message_text.contains("unite") || message_text.contains("cooperate"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for teamwork and cooperation
+	}
+	if(message_text.contains("priority") || message_text.contains("critical") || message_text.contains("urgent") || message_text.contains("important") || message_text.contains("escalate") || message_text.contains("high") || message_text.contains("immediate") || message_text.contains("focus") || message_text.contains("key") || message_text.contains("significant"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for priority-based tasks
+	}
+	if(message_text.contains("plan") || message_text.contains("roadmap") || message_text.contains("blueprint") || message_text.contains("strategy") || message_text.contains("framework") || message_text.contains("agenda") || message_text.contains("outline") || message_text.contains("path") || message_text.contains("goal") || message_text.contains("objective"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for planning and strategy
+	}
+	if(message_text.contains("design") || message_text.contains("draft") || message_text.contains("layout") || message_text.contains("prototype") || message_text.contains("model") || message_text.contains("sketch") || message_text.contains("blueprint") || message_text.contains("render") || message_text.contains("develop") || message_text.contains("create"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for design and creation
+	}
+	if(message_text.contains("deploy") || message_text.contains("release") || message_text.contains("launch") || message_text.contains("execute") || message_text.contains("activate") || message_text.contains("deliver") || message_text.contains("rollout") || message_text.contains("start") || message_text.contains("initiate") || message_text.contains("begin"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for deployment and execution
+	}
+	if(message_text.contains("meeting") || message_text.contains("call") || message_text.contains("discussion") || message_text.contains("session") || message_text.contains("conference") || message_text.contains("brainstorm") || message_text.contains("huddle") || message_text.contains("standup") || message_text.contains("review") || message_text.contains("agenda"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for meeting-related terms
+	}
+	if(message_text.contains("innovate") || message_text.contains("explore") || message_text.contains("create") || message_text.contains("invent") || message_text.contains("think") || message_text.contains("brainstorm") || message_text.contains("propose") || message_text.contains("discover") || message_text.contains("originate") || message_text.contains("imagine"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for innovation and creativity
+	}
+	if(message_text.contains("code") || message_text.contains("program") || message_text.contains("develop") || message_text.contains("script") || message_text.contains("function") || message_text.contains("algorithm") || message_text.contains("debug") || message_text.contains("compile") || message_text.contains("execute") || message_text.contains("runtime"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for coding-related terms
+	}
+	if(message_text.contains("test") || message_text.contains("verify") || message_text.contains("validate") || message_text.contains("QA") || message_text.contains("quality") || message_text.contains("checks") || message_text.contains("trial") || message_text.contains("experiment") || message_text.contains("simulation") || message_text.contains("assess"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for testing and quality assurance
+	}
+	if(message_text.contains("deploy") || message_text.contains("publish") || message_text.contains("go-live") || message_text.contains("launch") || message_text.contains("rollout") || message_text.contains("delivery") || message_text.contains("ship") || message_text.contains("release") || message_text.contains("execute") || message_text.contains("start"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for deployment-related terms
+	}
+	if(message_text.contains("document") || message_text.contains("write") || message_text.contains("record") || message_text.contains("note") || message_text.contains("report") || message_text.contains("summary") || message_text.contains("manual") || message_text.contains("instructions") || message_text.contains("guide") || message_text.contains("procedures"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for documentation and note-taking
+	}
+	if(message_text.contains("analyze") || message_text.contains("evaluate") || message_text.contains("interpret") || message_text.contains("assess") || message_text.contains("review") || message_text.contains("research") || message_text.contains("compare") || message_text.contains("calculate") || message_text.contains("examine") || message_text.contains("audit"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for analysis and evaluation
+	}
+	if(message_text.contains("schedule") || message_text.contains("deadline") || message_text.contains("timeline") || message_text.contains("plan") || message_text.contains("agenda") || message_text.contains("roadmap") || message_text.contains("calendar") || message_text.contains("milestones") || message_text.contains("event") || message_text.contains("task"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for scheduling and planning
+	}
+	if(message_text.contains("resource") || message_text.contains("allocate") || message_text.contains("assign") || message_text.contains("team") || message_text.contains("support") || message_text.contains("help") || message_text.contains("assist") || message_text.contains("collaborate") || message_text.contains("tools") || message_text.contains("materials"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for resource management and collaboration
+	}
+	if(message_text.contains("risk") || message_text.contains("threat") || message_text.contains("issue") || message_text.contains("problem") || message_text.contains("challenge") || message_text.contains("concern") || message_text.contains("mitigate") || message_text.contains("resolve") || message_text.contains("address") || message_text.contains("prevent"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for risk and issue management
+	}
+	if(message_text.contains("optimize") || message_text.contains("improve") || message_text.contains("refactor") || message_text.contains("enhance") || message_text.contains("upgrade") || message_text.contains("simplify") || message_text.contains("streamline") || message_text.contains("fine-tune") || message_text.contains("boost") || message_text.contains("adjust"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for optimization and improvement
+	}
+	if(message_text.contains("share") || message_text.contains("inform") || message_text.contains("update") || message_text.contains("notify") || message_text.contains("broadcast") || message_text.contains("communicate") || message_text.contains("announce") || message_text.contains("spread") || message_text.contains("message") || message_text.contains("relay"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for sharing and communication
+	}
+	if(message_text.contains("meeting") || message_text.contains("discussion") || message_text.contains("call") || message_text.contains("conference") || message_text.contains("session") || message_text.contains("presentation") || message_text.contains("brainstorm") || message_text.contains("review") || message_text.contains("sync") || message_text.contains("catch-up"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for meeting-related terms
+	}
+	if(message_text.contains("approve") || message_text.contains("authorize") || message_text.contains("accept") || message_text.contains("confirm") || message_text.contains("validate") || message_text.contains("endorse") || message_text.contains("permit") || message_text.contains("grant") || message_text.contains("agree") || message_text.contains("sign-off"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for approval-related terms
+	}
+	if(message_text.contains("error") || message_text.contains("bug") || message_text.contains("issue") || message_text.contains("fault") || message_text.contains("crash") || message_text.contains("failure") || message_text.contains("glitch") || message_text.contains("debug") || message_text.contains("fix") || message_text.contains("resolve"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for error and bug-related terms
+	}
+	if(message_text.contains("client") || message_text.contains("customer") || message_text.contains("user") || message_text.contains("audience") || message_text.contains("stakeholder") || message_text.contains("subscriber") || message_text.contains("partner") || message_text.contains("vendor") || message_text.contains("prospect") || message_text.contains("buyer"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for client-related terms
+	}
+	if(message_text.contains("goal") || message_text.contains("target") || message_text.contains("objective") || message_text.contains("milestone") || message_text.contains("ambition") || message_text.contains("aspiration") || message_text.contains("plan") || message_text.contains("achievement") || message_text.contains("aim") || message_text.contains("purpose"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for goal-setting and aspirations
+	}
+	if(message_text.contains("budget") || message_text.contains("cost") || message_text.contains("expense") || message_text.contains("revenue") || message_text.contains("profit") || message_text.contains("investment") || message_text.contains("fund") || message_text.contains("allocation") || message_text.contains("finance") || message_text.contains("pricing"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for financial terms
+	}
+	if(message_text.contains("mentor") || message_text.contains("coach") || message_text.contains("guide") || message_text.contains("teach") || message_text.contains("train") || message_text.contains("educate") || message_text.contains("advise") || message_text.contains("support") || message_text.contains("instruct") || message_text.contains("lead"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for mentoring and leadership terms
+	}
+	if(message_text.contains("teamwork") || message_text.contains("collaboration") || message_text.contains("unity") || message_text.contains("cooperation") || message_text.contains("coordination") || message_text.contains("partnership") || message_text.contains("synergy") || message_text.contains("group") || message_text.contains("network") || message_text.contains("together"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for teamwork and collaboration
+	}
+	if(message_text.contains("learning") || message_text.contains("skill") || message_text.contains("development") || message_text.contains("training") || message_text.contains("course") || message_text.contains("education") || message_text.contains("knowledge") || message_text.contains("growth") || message_text.contains("lesson") || message_text.contains("module"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for learning and growth
+	}
+	if(message_text.contains("motivate") || message_text.contains("inspire") || message_text.contains("encourage") || message_text.contains("drive") || message_text.contains("uplift") || message_text.contains("empower") || message_text.contains("support") || message_text.contains("cheer") || message_text.contains("boost") || message_text.contains("energize"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for motivation and inspiration
+	}
+	if(message_text.contains("deadline") || message_text.contains("due") || message_text.contains("timeline") || message_text.contains("schedule") || message_text.contains("milestone") || message_text.contains("delivery") || message_text.contains("target") || message_text.contains("timeframe") || message_text.contains("completion") || message_text.contains("urgency"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for deadline and time management terms
+	}
+	if(message_text.contains("project") || message_text.contains("task") || message_text.contains("assignment") || message_text.contains("workload") || message_text.contains("deliverable") || message_text.contains("module") || message_text.contains("responsibility") || message_text.contains("job") || message_text.contains("activity") || message_text.contains("initiative"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for project and task-related terms
+	}
+	if(message_text.contains("report") || message_text.contains("document") || message_text.contains("write-up") || message_text.contains("summary") || message_text.contains("analysis") || message_text.contains("data") || message_text.contains("statistics") || message_text.contains("findings") || message_text.contains("details") || message_text.contains("record"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for reporting and documentation
+	}
+	if(message_text.contains("software") || message_text.contains("tool") || message_text.contains("platform") || message_text.contains("application") || message_text.contains("program") || message_text.contains("technology") || message_text.contains("utility") || message_text.contains("integration") || message_text.contains("system") || message_text.contains("solution"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for tech-related terms
+	}
+	if(message_text.contains("feedback") || message_text.contains("input") || message_text.contains("comment") || message_text.contains("opinion") || message_text.contains("review") || message_text.contains("suggestion") || message_text.contains("evaluation") || message_text.contains("critique") || message_text.contains("response") || message_text.contains("reaction"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for feedback-related terms
+	}
+	if(message_text.contains("strategy") || message_text.contains("plan") || message_text.contains("approach") || message_text.contains("tactic") || message_text.contains("roadmap") || message_text.contains("agenda") || message_text.contains("policy") || message_text.contains("blueprint") || message_text.contains("outline") || message_text.contains("direction"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for strategic terms
+	}
+	if(message_text.contains("success") || message_text.contains("achievement") || message_text.contains("victory") || message_text.contains("accomplishment") || message_text.contains("win") || message_text.contains("goal") || message_text.contains("result") || message_text.contains("breakthrough") || message_text.contains("progress") || message_text.contains("triumph"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for success and accomplishments
+	}
+	if(message_text.contains("problem") || message_text.contains("challenge") || message_text.contains("obstacle") || message_text.contains("issue") || message_text.contains("difficulty") || message_text.contains("barrier") || message_text.contains("complication") || message_text.contains("hindrance") || message_text.contains("concern") || message_text.contains("risk"))
+	{
+		engagement_points = engagement_points + 6;
+		// Award 6 points for problem-solving-related terms
+	}
+	if(message_text.contains("opportunity") || message_text.contains("prospect") || message_text.contains("chance") || message_text.contains("potential") || message_text.contains("possibility") || message_text.contains("option") || message_text.contains("lead") || message_text.contains("scope") || message_text.contains("opening") || message_text.contains("avenue"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for opportunity-related terms
+	}
+	if(message_text.contains("team") || message_text.contains("group") || message_text.contains("organization") || message_text.contains("department") || message_text.contains("division") || message_text.contains("staff") || message_text.contains("workforce") || message_text.contains("crew") || message_text.contains("unit") || message_text.contains("squad"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for team and organization-related terms
+	}
+	if(message_text.contains("training") || message_text.contains("learning") || message_text.contains("skill") || message_text.contains("development") || message_text.contains("workshop") || message_text.contains("education") || message_text.contains("seminar") || message_text.contains("knowledge") || message_text.contains("growth") || message_text.contains("improvement"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for learning and development-related terms
+	}
+	if(message_text.contains("meeting") || message_text.contains("discussion") || message_text.contains("call") || message_text.contains("conference") || message_text.contains("session") || message_text.contains("briefing") || message_text.contains("sync") || message_text.contains("forum") || message_text.contains("dialogue") || message_text.contains("catch-up"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for meeting-related terms
+	}
+	if(message_text.contains("idea") || message_text.contains("concept") || message_text.contains("suggestion") || message_text.contains("innovation") || message_text.contains("creativity") || message_text.contains("inspiration") || message_text.contains("thought") || message_text.contains("insight") || message_text.contains("brainstorming") || message_text.contains("proposal"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for idea and creativity-related terms
+	}
+	if(message_text.contains("support") || message_text.contains("help") || message_text.contains("assistance") || message_text.contains("aid") || message_text.contains("guidance") || message_text.contains("cooperation") || message_text.contains("collaboration") || message_text.contains("backup") || message_text.contains("relief") || message_text.contains("contribution"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for teamwork and support-related terms
+	}
+	if(message_text.contains("problem-solving") || message_text.contains("solution") || message_text.contains("fix") || message_text.contains("troubleshooting") || message_text.contains("resolution") || message_text.contains("repair") || message_text.contains("rectify") || message_text.contains("solve") || message_text.contains("address") || message_text.contains("overcome"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for problem-solving-related terms
+	}
+	if(message_text.contains("reward") || message_text.contains("recognition") || message_text.contains("appreciation") || message_text.contains("award") || message_text.contains("commendation") || message_text.contains("praise") || message_text.contains("gratitude") || message_text.contains("applause") || message_text.contains("kudos") || message_text.contains("thankfulness"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for recognition-related terms
+	}
+	if(message_text.contains("challenge") || message_text.contains("competition") || message_text.contains("game") || message_text.contains("quiz") || message_text.contains("contest") || message_text.contains("activity") || message_text.contains("event") || message_text.contains("puzzle") || message_text.contains("adventure") || message_text.contains("exercise"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for activity-related terms
+	}
+	if(message_text.contains("finance") || message_text.contains("budget") || message_text.contains("fund") || message_text.contains("expense") || message_text.contains("investment") || message_text.contains("cost") || message_text.contains("saving") || message_text.contains("profit") || message_text.contains("revenue") || message_text.contains("income"))
+	{
+		engagement_points = engagement_points + 6;
+		// Award 6 points for financial terms
+	}
+	if(message_text.contains("celebration") || message_text.contains("party") || message_text.contains("anniversary") || message_text.contains("achievement") || message_text.contains("milestone") || message_text.contains("birthday") || message_text.contains("success") || message_text.contains("festivity") || message_text.contains("holiday") || message_text.contains("festival"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for celebration-related terms
+	}
+	if(message_text.contains("progress") || message_text.contains("update") || message_text.contains("status") || message_text.contains("report") || message_text.contains("milestone") || message_text.contains("check-in") || message_text.contains("summary") || message_text.contains("brief") || message_text.contains("details") || message_text.contains("review"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for progress and updates
+	}
+	if(message_text.contains("initiative") || message_text.contains("campaign") || message_text.contains("drive") || message_text.contains("strategy") || message_text.contains("plan") || message_text.contains("goal") || message_text.contains("objective") || message_text.contains("agenda") || message_text.contains("priority") || message_text.contains("vision"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for strategic planning-related terms
+	}
+	if(message_text.contains("feedback") || message_text.contains("review") || message_text.contains("input") || message_text.contains("opinion") || message_text.contains("comment") || message_text.contains("suggestion") || message_text.contains("critique") || message_text.contains("perspective") || message_text.contains("assessment") || message_text.contains("evaluation"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for feedback-related terms
+	}
+	if(message_text.contains("deadline") || message_text.contains("timeline") || message_text.contains("schedule") || message_text.contains("plan") || message_text.contains("target") || message_text.contains("due date") || message_text.contains("delivery") || message_text.contains("progression") || message_text.contains("goal date") || message_text.contains("milestone"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for deadline-related terms
+	}
+	if(message_text.contains("project") || message_text.contains("task") || message_text.contains("assignment") || message_text.contains("role") || message_text.contains("responsibility") || message_text.contains("objective") || message_text.contains("duty") || message_text.contains("mission") || message_text.contains("scope") || message_text.contains("deliverable"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for project-related terms
+	}
+	if(message_text.contains("leadership") || message_text.contains("teamwork") || message_text.contains("collaboration") || message_text.contains("cooperation") || message_text.contains("guidance") || message_text.contains("support") || message_text.contains("coordination") || message_text.contains("assistance") || message_text.contains("mentor") || message_text.contains("facilitation"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for leadership and teamwork-related terms
+	}
+	if(message_text.contains("technology") || message_text.contains("software") || message_text.contains("hardware") || message_text.contains("application") || message_text.contains("tool") || message_text.contains("platform") || message_text.contains("automation") || message_text.contains("integration") || message_text.contains("system") || message_text.contains("innovation"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for technology-related terms
+	}
+	if(message_text.contains("efficiency") || message_text.contains("productivity") || message_text.contains("optimization") || message_text.contains("streamlining") || message_text.contains("effectiveness") || message_text.contains("performance") || message_text.contains("improvement") || message_text.contains("workflow") || message_text.contains("enhancement") || message_text.contains("output"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for productivity-related terms
+	}
+	if(message_text.contains("customer") || message_text.contains("client") || message_text.contains("user") || message_text.contains("consumer") || message_text.contains("buyer") || message_text.contains("shopper") || message_text.contains("patron") || message_text.contains("end-user") || message_text.contains("purchaser") || message_text.contains("stakeholder"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for customer-related terms
+	}
+	if(message_text.contains("problem") || message_text.contains("issue") || message_text.contains("challenge") || message_text.contains("obstacle") || message_text.contains("hurdle") || message_text.contains("difficulty") || message_text.contains("complication") || message_text.contains("dilemma") || message_text.contains("struggle") || message_text.contains("roadblock"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for problem-related terms
+	}
+	if(message_text.contains("health") || message_text.contains("well-being") || message_text.contains("fitness") || message_text.contains("wellness") || message_text.contains("safety") || message_text.contains("hygiene") || message_text.contains("care") || message_text.contains("sanitation") || message_text.contains("comfort") || message_text.contains("protection"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for health-related terms
+	}
+	if(message_text.contains("deadline") || message_text.contains("due date") || message_text.contains("timeline") || message_text.contains("completion") || message_text.contains("deliverable") || message_text.contains("finalize") || message_text.contains("finish") || message_text.contains("project") || message_text.contains("target") || message_text.contains("milestone"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for deadline and project-related terms
+	}
+	if(message_text.contains("reliable") || message_text.contains("dependable") || message_text.contains("consistent") || message_text.contains("trustworthy") || message_text.contains("loyal") || message_text.contains("faithful") || message_text.contains("steadfast") || message_text.contains("honest") || message_text.contains("diligent") || message_text.contains("responsible"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for reliability-related terms
+	}
+	if(message_text.contains("success") || message_text.contains("achievement") || message_text.contains("accomplishment") || message_text.contains("victory") || message_text.contains("triumph") || message_text.contains("attain") || message_text.contains("win") || message_text.contains("goal") || message_text.contains("recognition") || message_text.contains("breakthrough"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for success and achievement-related terms
+	}
+	if(message_text.contains("team") || message_text.contains("collaborate") || message_text.contains("cooperation") || message_text.contains("group") || message_text.contains("partnership") || message_text.contains("collective") || message_text.contains("alliance") || message_text.contains("support") || message_text.contains("shared") || message_text.contains("effort"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for teamwork and collaboration-related terms
+	}
+	if(message_text.contains("alert") || message_text.contains("warning") || message_text.contains("emergency") || message_text.contains("issue") || message_text.contains("hazard") || message_text.contains("danger") || message_text.contains("urgent") || message_text.contains("critical") || message_text.contains("problem") || message_text.contains("notification"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for alert or emergency-related terms
+	}
+	if(message_text.contains("update") || message_text.contains("news") || message_text.contains("announcement") || message_text.contains("report") || message_text.contains("briefing") || message_text.contains("progress") || message_text.contains("status") || message_text.contains("summary") || message_text.contains("review") || message_text.contains("overview"))
+	{
+		engagement_points = engagement_points + 8;
+		// Award 8 points for update or informational terms
+	}
+	if(message_text.contains("resolution") || message_text.contains("solution") || message_text.contains("fix") || message_text.contains("remedy") || message_text.contains("resolve") || message_text.contains("clear") || message_text.contains("correct") || message_text.contains("address") || message_text.contains("remedy") || message_text.contains("solve"))
+	{
+		engagement_points = engagement_points + 9;
+		// Award 9 points for problem-solving terms
+	}
+	if(message_text.contains("resource") || message_text.contains("tool") || message_text.contains("software") || message_text.contains("application") || message_text.contains("platform") || message_text.contains("solution") || message_text.contains("system") || message_text.contains("technology") || message_text.contains("framework") || message_text.contains("engine"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for resource and technology-related terms
+	}
+	if(message_text.contains("contact") || message_text.contains("email") || message_text.contains("message") || message_text.contains("phone") || message_text.contains("meeting") || message_text.contains("connection") || message_text.contains("call") || message_text.contains("response") || message_text.contains("chat") || message_text.contains("communication"))
+	{
+		engagement_points = engagement_points + 7;
+		// Award 7 points for communication-related terms
+	}
+	if(message_text.contains("new") || message_text.contains("begin") || message_text.contains("start") || message_text.contains("launch") || message_text.contains("introduce") || message_text.contains("initiate") || message_text.contains("commence") || message_text.contains("open") || message_text.contains("kickoff") || message_text.contains("rollout"))
+	{
+		engagement_points = engagement_points + 10;
+		// Award 10 points for new beginnings or initiatives
+	}
+	else
+	{
+		engagement_points = engagement_points + 2;
+		// Award 2 points for general messages
+	}
+	// Fetch the current user's record from the database
+	query_map = Map();
+	criteria_string = "userid==" + user.get("id");
+	// Search by user ID
+	query_map.put("criteria",criteria_string);
+	response_map = zoho.cliq.getRecords("userdb",query_map);
+	record_id = 0;
+	// Check if the user exists
+	if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+	{
+		record_id = response_map.get("list").get(0).get("id");
+		// Fetch the current engagement score
+		current_score = response_map.get("list").get(0).get("engagementscore");
+		if(current_score == null)
+		{
+			current_score = 0;
+		}
+		new_score = current_score.toLong() + engagement_points;
+		// Updating the user record with the new score
+		values_map = Map();
+		values_map.put("engagementscore",new_score);
+		response_map = zoho.cliq.updateRecord("userdb",record_id,values_map);
+	}
+	else
+	{
+		values_map = Map();
+		values_map.put("userid",user.get("id"));
+		values_map.put("name",user.get("first_name"));
+		values_map.put("engagementscore",engagement_points);
+		zoho.cliq.createRecord("userdb",values_map);
+	}
+}
+else if(operation.equals("message_edited"))
+{
+	botMessage = "$USER_MENTION has edited a message.";
+}
+else if(operation.equals("message_deleted"))
+{
+	botMessage = "Hey there! $USER_MENTION has deleted a message.";
+}
+else if(operation.equals("auto_followed_thread"))
+{
+	botMessage = "I've started following this thread automatically. Let's keep ourselves informed together!";
+}
+else if(operation.equals("added_in_thread"))
+{
+	botMessage = "Thanks for adding me $USER_MENTION. Hi everyone! :bye-bye:\nI will actively participate in this thread from now on.";
+}
+else if(operation.equals("thread_reopened"))
+{
+	botMessage = "This thread has been reopened. I will actively participate in this thread from now on.";
+}
+botMessage = botMessage.replaceAll('\' + "$USER_MENTION","{@" + user.get("id") + "}");
+response.put("text",botMessage);
+return response;

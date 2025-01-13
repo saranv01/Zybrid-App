@@ -1,0 +1,124 @@
+
+response = Map();
+response.put("text","Select one of the options below!");
+bot = Map();
+bot.put("name","zybrid");
+response.put("bot",bot);
+response.put("broadcast","true");
+card = Map();
+card.put("title","Hi! How are you feeling today? 😊");
+card.put("theme","basic");
+response.put("card",card);
+buttonsList = list();
+// Happy Button
+buttonsList0 = Map();
+buttonsList0.put("label","Happy 😊");
+buttonsList0.put("hint","Feeling Happy?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList0.put("action",action);
+buttonsList.add(buttonsList0);
+// Sad Button
+buttonsList1 = Map();
+buttonsList1.put("label","Sad 😞");
+buttonsList1.put("hint","Feeling Sad?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList1.put("action",action);
+buttonsList.add(buttonsList1);
+// Neutral Button
+buttonsList2 = Map();
+buttonsList2.put("label","Neutral 😐");
+buttonsList2.put("hint","Feeling Neutral?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList2.put("action",action);
+buttonsList.add(buttonsList2);
+// Excited Button
+buttonsList3 = Map();
+buttonsList3.put("label","Excited 🤩");
+buttonsList3.put("hint","Feeling Excited?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList3.put("action",action);
+buttonsList.add(buttonsList3);
+// Angry Button
+buttonsList4 = Map();
+buttonsList4.put("label","Angry 😡");
+buttonsList4.put("hint","Feeling Angry?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList4.put("action",action);
+buttonsList.add(buttonsList4);
+// Stressed Button
+buttonsList5 = Map();
+buttonsList5.put("label","Stressed 😰");
+buttonsList5.put("hint","Feeling Stressed?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList5.put("action",action);
+buttonsList.add(buttonsList5);
+// Relaxed Button
+buttonsList6 = Map();
+buttonsList6.put("label","Relaxed 😌");
+buttonsList6.put("hint","Feeling Relaxed?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList6.put("action",action);
+buttonsList.add(buttonsList6);
+// Grateful Button
+buttonsList7 = Map();
+buttonsList7.put("label","Grateful 🙏");
+buttonsList7.put("hint","Feeling Grateful?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList7.put("action",action);
+buttonsList.add(buttonsList7);
+// Energetic Button
+buttonsList8 = Map();
+buttonsList8.put("label","Energetic 💪");
+buttonsList8.put("hint","Feeling Energetic?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList8.put("action",action);
+buttonsList.add(buttonsList8);
+// Confused Button
+buttonsList9 = Map();
+buttonsList9.put("label","Confused 🤔");
+buttonsList9.put("hint","Feeling Confused?");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","LogMood");
+action.put("data",data);
+buttonsList9.put("action",action);
+buttonsList.add(buttonsList9);
+response.put("buttons",buttonsList);
+zoho.cliq.postToBot("zybridiq",response);

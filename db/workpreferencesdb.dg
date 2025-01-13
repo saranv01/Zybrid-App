@@ -1,0 +1,5 @@
+values_map = Map(); 
+values_map.put("preferenceforweek", "ABC"); 
+values_map.put("userid", "123"); 
+values_map.put("username", "ABC"); 
+response_map=zoho.cliq.createRecord("workpreferencesdb", values_map); 

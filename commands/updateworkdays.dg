@@ -1,0 +1,23 @@
+
+response = Map();
+response.put("text","Update your work place preference here (for this week)");
+card = Map();
+card.put("theme","prompt");
+card.put("thumbnail","https://img.freepik.com/free-vector/woman-working-using-laptop-flat-design_1308-96714.jpg?t=st=1732707016~exp=1732710616~hmac=35b23fb4906f98245887e6cfd0b0eefdaf251d45a09313e1699c60e72723bf00&w=740");
+card.put("title","UpdateWork preferences for this Week");
+response.put("card",card);
+buttonsList = list();
+buttonsList0 = Map();
+buttonsList0.put("label","Update Now");
+buttonsList0.put("hint","choose now");
+buttonsList0.put("type","+");
+action = Map();
+action.put("type","invoke.function");
+data = Map();
+data.put("name","workPreference");
+action.put("data",data);
+buttonsList0.put("action",action);
+buttonsList0.put("key","workPreference");
+buttonsList.add(buttonsList0);
+response.put("buttons",buttonsList);
+return response;

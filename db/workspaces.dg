@@ -1,0 +1,5 @@
+values_map = Map(); 
+values_map.put("workspacename", "ABC"); 
+values_map.put("category", "ABC"); 
+values_map.put("workspacedescription", "ABC"); 
+response_map=zoho.cliq.createRecord("workspaces", values_map); 

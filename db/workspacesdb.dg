@@ -1,0 +1,7 @@
+values_map = Map(); 
+values_map.put("userid", "123"); 
+values_map.put("endtime", "ABC"); 
+values_map.put("description", "ABC"); 
+values_map.put("locationname", "ABC"); 
+values_map.put("starttime", "ABC"); 
+response_map=zoho.cliq.createRecord("workspacesdb", values_map); 

@@ -1,0 +1,59 @@
+
+response = Map();
+query_map = Map();
+criteria_string = "";
+query_map.put("criteria",criteria_string);
+response_map = zoho.cliq.getRecords("workspaces",query_map);
+record_id = 0;
+conflictExists = false;
+workspaceExists = false;
+if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+{
+	workspaceExists = true;
+	optionsList = list();
+	for each  workspace in response_map.get("list")
+	{
+		workspaceName = workspace.get("workspacename");
+		workspaceId = workspace.get("id");
+		workspaceCategory = workspace.get("category");
+		option = Map();
+		option.put("value",workspaceId);
+		option.put("label",workspaceName);
+		optionsList.add(option);
+	}
+	response.put("type","form");
+	response.put("title","Workspace Booking");
+	response.put("name","workspaceBookingForm");
+	response.put("hint","Provide details to book a workspace.");
+	response.put("button_label","Check Availability");
+	inputsList = list();
+	// Workspace name (dynamic select)
+	workspaceInput = Map();
+	workspaceInput.put("label","Workspace");
+	workspaceInput.put("name","workspace_name");
+	workspaceInput.put("type","dynamic_select");
+	workspaceInput.put("options",optionsList);
+	workspaceInput.put("placeholder","Select a workspace");
+	workspaceInput.put("mandatory",true);
+	inputsList.add(workspaceInput);
+	startTimeInput = Map();
+	startTimeInput.put("label","Start Time");
+	startTimeInput.put("name","start_time");
+	startTimeInput.put("placeholder","Enter start time (e.g., 2024-11-26 09:00)");
+	startTimeInput.put("type","datetime");
+	startTimeInput.put("mandatory",true);
+	inputsList.add(startTimeInput);
+	endTimeInput = Map();
+	endTimeInput.put("label","End Time");
+	endTimeInput.put("name","end_time");
+	endTimeInput.put("placeholder","Enter end time (e.g., 2024-11-26 11:00)");
+	endTimeInput.put("type","datetime");
+	endTimeInput.put("mandatory",true);
+	inputsList.add(endTimeInput);
+	response.put("inputs",inputsList);
+	action = Map();
+	action.put("type","invoke.function");
+	action.put("name","checkAndBookWorkspace");
+	response.put("action",action);
+}
+return response;

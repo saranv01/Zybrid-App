@@ -1,0 +1,10 @@
+values_map = Map(); 
+values_map.put("userid", "ABC"); 
+values_map.put("name", "ABC"); 
+values_map.put("email", "ABC"); 
+values_map.put("workpreferencestatus", "ABC"); 
+values_map.put("coffeebuddy", "TRUE"); 
+values_map.put("field", "ABC"); 
+values_map.put("engagementscore", "123"); 
+values_map.put("level", "123"); 
+response_map=zoho.cliq.createRecord("userdb", values_map); 

@@ -1,0 +1,192 @@
+
+if(message.containsIgnoreCase("ADD WORKSPACE "))
+{
+	response = Map();
+	// (format: "ADD WORKSPACE <WorkspaceName>")
+	workspaceDetails = message.trim().subString("ADD WORKSPACE ".length()).trim();
+	detailsList = workspaceDetails.toList(" ");
+	category = "personal working space";
+	description = "better for productivity";
+	workspaceName = detailsList.get(0);
+	if(detailsList.size() > 1)
+	{
+		category = detailsList.get(1);
+	}
+	if(detailsList.size() > 2)
+	{
+		description = detailsList.get(2);
+	}
+	if(workspaceName.isEmpty())
+	{
+		response.put("text","❌ Please provide a valid workspace name after 'ADD WORKSPACE'. Example: ADD WORKSPACE Conference Room A");
+		return response;
+	}
+	values_map = Map();
+	values_map.put("workspacename",workspaceName);
+	values_map.put("category",category);
+	values_map.put("workspacedescription",description);
+	response_map = zoho.cliq.createRecord("workspaces",values_map);
+	info workspaceName;
+	if(response_map.get("status") == "SUCCESS")
+	{
+		response.put("text","✅ Successfully added the workspace *" + workspaceName + "* to the database.");
+		info response_map;
+	}
+	else
+	{
+		response.put("text","❌ Unable to add the workspace. Please try again or contact support.");
+	}
+	return response;
+}
+response = Map();
+if(message.containsIgnoreCase("BOOK WORKSPACE"))
+{
+	query_map = Map();
+	criteria_string = "";
+	query_map.put("criteria",criteria_string);
+	// Fetch workspaces dynamically
+	response_map = zoho.cliq.getRecords("workspaces",query_map);
+	record_id = 0;
+	conflictExists = false;
+	workspaceExists = false;
+	if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+	{
+		workspaceExists = true;
+		optionsList = list();
+		for each  workspace in response_map.get("list")
+		{
+			workspaceName = workspace.get("workspacename");
+			workspaceId = workspace.get("id");
+			workspaceCategory = workspace.get("category");
+			// Add each workspace as an option
+			option = Map();
+			option.put("value",workspaceId);
+			// or another unique field to identify the workspace
+			option.put("label",workspaceName);
+			optionsList.add(option);
+		}
+		response.put("type","form");
+		response.put("title","Workspace Booking");
+		response.put("name","workspaceBookingForm");
+		response.put("hint","Provide details to book a workspace.");
+		response.put("button_label","Check Availability");
+		// Define input fields
+		inputsList = list();
+		// Workspace name (dynamic select)
+		workspaceInput = Map();
+		workspaceInput.put("label","Workspace");
+		workspaceInput.put("name","workspace_name");
+		workspaceInput.put("type","dynamic_select");
+		workspaceInput.put("options",optionsList);
+		// Dynamic options
+		workspaceInput.put("placeholder","Select a workspace");
+		workspaceInput.put("mandatory",true);
+		inputsList.add(workspaceInput);
+		startTimeInput = Map();
+		startTimeInput.put("label","Start Time");
+		startTimeInput.put("name","start_time");
+		startTimeInput.put("placeholder","Enter start time (e.g., 2024-11-26 09:00)");
+		startTimeInput.put("type","datetime");
+		startTimeInput.put("mandatory",true);
+		inputsList.add(startTimeInput);
+		endTimeInput = Map();
+		endTimeInput.put("label","End Time");
+		endTimeInput.put("name","end_time");
+		endTimeInput.put("placeholder","Enter end time (e.g., 2024-11-26 11:00)");
+		endTimeInput.put("type","datetime");
+		endTimeInput.put("mandatory",true);
+		inputsList.add(endTimeInput);
+		response.put("inputs",inputsList);
+		action = Map();
+		action.put("type","invoke.function");
+		action.put("name","checkAndBookWorkspace");
+		response.put("action",action);
+	}
+	return response;
+}
+else if(message.containsIgnoreCase("about me"))
+{
+	userFirstName = user.get("first_name");
+	query_map = Map();
+	response = Map();
+	criteria_string = "userid==" + user.get("id");
+	query_map.put("criteria",criteria_string);
+	response_map = zoho.cliq.getRecords("userdb",query_map);
+	name = user.get("first_name");
+	coffeebuddy = false;
+	workpreferencestatus = "";
+	engagementscore = 0;
+	if(response_map.get("status").equalsIgnoreCase("SUCCESS") && response_map.get("list").size() > 0)
+	{
+		record = response_map.get("list").get(0);
+		name = user.get("first_name");
+		coffeebuddy = response_map.get("list").get(0).get("coffeebuddy");
+		engagementscore = response_map.get("list").get(0).get("engagementscore");
+		workpreferencestatus = response_map.get("list").get(0).get("workpreferencestatus");
+	}
+	response = Map();
+	response.put("text","Here is your details!");
+	bot = Map();
+	bot.put("name","zybrid");
+	response.put("bot",bot);
+	card = Map();
+	card.put("icon","https://cdn-icons-png.flaticon.com/128/1177/1177568.png");
+	card.put("theme","modern-inline");
+	response.put("card",card);
+	slidesList = list();
+	slidesList0 = Map();
+	slidesList0.put("type","table");
+	data = Map();
+	headersList = list();
+	headersList.add("Title");
+	headersList.add("Description");
+	data.put("headers",headersList);
+	rowsList = list();
+	rowsList0 = Map();
+	rowsList0.put("Title","Name");
+	rowsList0.put("Description",name);
+	rowsList.add(rowsList0);
+	rowsList1 = Map();
+	rowsList1.put("Title","Work Preference");
+	rowsList1.put("Description",workpreferencestatus);
+	rowsList.add(rowsList1);
+	rowsList2 = Map();
+	rowsList2.put("Title","Coffee Buddy");
+	rowsList2.put("Description",coffeebuddy);
+	rowsList.add(rowsList2);
+	rowsList3 = Map();
+	rowsList3.put("Title","Engagement Score");
+	rowsList3.put("Description",engagementscore + "");
+	rowsList.add(rowsList3);
+	data.put("rows",rowsList);
+	slidesList0.put("data",data);
+	slidesList.add(slidesList0);
+	response.put("slides",slidesList);
+	return response;
+}
+else
+{
+	response = Map();
+	bot = Map();
+	bot.put("name","zybrid");
+	response.put("bot",bot);
+	card = Map();
+	card.put("title","Welcome to Zybrid!");
+	card.put("theme","modern-inline");
+	response.put("card",card);
+	slidesList = list();
+	slidesList0 = Map();
+	slidesList0.put("type","text");
+	slidesList0.put("title","Hi, welcome to Zybrid!");
+	slidesList0.put("data","Hello! I'm Zybrid, your friendly hybrid work assistant. I’m here to make your workday easier by helping with workspace bookings, work preferences, mood tracking, and more!\n\nFor more information about how I can assist you, type `/help` to get a list of all commands and features.");
+	slidesList.add(slidesList0);
+	slidesList1 = Map();
+	slidesList1.put("type","text");
+	slidesList1.put("title","Need Help?");
+	slidesList1.put("data","To access detailed information about any feature, type `/help`. Here's how it works:\n\n1️⃣ Type `/help` in the chat.\n2️⃣ I will respond with a list of available commands and their descriptions.\n\nUse this to quickly understand what you can do with me! or Refer the complete demonstration video: *`https//youtu.be/aasL2WKYWJc?si=Z81kBEsL5lnFPIxK`*");
+	slidesList.add(slidesList1);
+	response.put("slides",slidesList);
+	response.put("text","zybrid");
+	return response;
+}
+return response;
