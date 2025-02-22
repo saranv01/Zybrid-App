@@ -1,6 +1,12 @@
 # Zybrid Extension - Hybrid Workplace Management and Engagement
-  <img src="images/zybrid-thumbnail.png" width="600">
+
 Zybrid is an innovative extension that enhances hybrid workplace efficiency by enabling seamless work preference scheduling, mood tracking, workspace booking, and gamified engagement through intuitive bots and widgets. Designed for organizations adopting hybrid work cultures, Zybrid helps improve collaboration, boost employee engagement, and provide actionable insights for increased productivity and satisfaction.
+
+## Project Demonstration Video
+
+[![Zybrid Demonstration](https://img.youtube.com/vi/aasL2WKYWJc/0.jpg)](https://www.youtube.com/watch?v=aasL2WKYWJc)
+
+
 
 ## Features
 
@@ -47,11 +53,6 @@ Zybrid is an innovative extension that enhances hybrid workplace efficiency by e
 │   └── Mood Tracker Scheduler  
 └── Widgets  
     └── Engagement Leaderboard  
-
-## Project Demonstration Video
-
-[![Zybrid Demonstration](https://img.youtube.com/vi/aasL2WKYWJc/0.jpg)](https://www.youtube.com/watch?v=aasL2WKYWJc)
-
 
 
 
